@@ -1,10 +1,12 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
 
 public class Controller : MonoBehaviour
 {
+    public static UnityEvent ResetPositionSwordEvent = new UnityEvent();
     //Swipe
 
     private Vector2 _tapPosition;
@@ -27,7 +29,7 @@ public class Controller : MonoBehaviour
     private bool _isPlaying = true;
     private bool _isFirstClick = true;
 
-    private UnityEvent AddScoreEvent = new UnityEvent();
+    
 
     private void Start()
     {
@@ -36,20 +38,23 @@ public class Controller : MonoBehaviour
 
     private void Update()
     {
-        ShakeSword();
-        CheckIntervalBetweenTouches();
-        GetTouchPosition();
+        if (GameManager.gameMode == GameManager.GameMode.Game)
+        {
+            ShakeSword();
+            CheckIntervalBetweenTouches();
+            GetTouchPosition();
+        } 
     }
 
     private void OnMouseDown()
     {
-        if (_isPlaying == true)
+        if (CheckGameMode(GameManager.GameMode.Game) && _isPlaying == true)
         {
             _nowTimeTouch = DateTime.Now.TimeOfDay;
             if (_isFirstClick == true)
             {
                 _isFirstClick = false;
-                AddScoreEvent.Invoke();
+                Score.AddScoreEvent.Invoke();
             }
             MoveUpSword();
         }
@@ -66,15 +71,14 @@ public class Controller : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        AddScoreEvent.RemoveListener(score.StartAddScore);
-        AddScoreEvent.AddListener(score.StopAddScore);
         _isPlaying = false;
-        AddScoreEvent.Invoke();
+        Score.FinishAddScoreEvent.Invoke(true);
+        GameManager.SetGameOverEvent.Invoke();
     }
 
     private void CheckIntervalBetweenTouches()
     {
-        if (_isPlaying == true & _startPos.y < transform.position.y)
+        if (CheckGameMode(GameManager.gameMode) & _isPlaying == true & _startPos.y < transform.position.y)
         {
             TimeSpan intervalTime;
             intervalTime = DateTime.Now.TimeOfDay - _nowTimeTouch;
@@ -123,7 +127,7 @@ public class Controller : MonoBehaviour
         _isMobile = Application.isMobilePlatform;
         sword = GetComponent<Sword>();
         _startPos = transform.position;
-        AddScoreEvent.AddListener(score.StartAddScore);
+        ResetPositionSwordEvent.AddListener(ResetPositionSword);
     }
 
     private void MoveUpSword()
@@ -185,5 +189,20 @@ public class Controller : MonoBehaviour
         _isSwiping = false;
         _tapPosition = Vector2.zero;
         _swipeDelta = Vector2.zero;
+    }
+
+    private bool CheckGameMode(GameManager.GameMode gameMode)
+    {
+        if (GameManager.gameMode == gameMode)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void ResetPositionSword()
+    {
+        _isFirstClick = true;
+        gameObject.transform.position = _startPos;
     }
 }
