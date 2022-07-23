@@ -1,40 +1,68 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Sword : MonoBehaviour
 {
+    private Collider _colider;
+    private Bounds _startBoundsSword;
+    private float _targetBoundsYSword;
+
     public static UnityEvent<int> SetHighScoreEvent = new UnityEvent<int>();
+
+    public static UnityEvent StartShakeSwordEvent = new UnityEvent();
+    public static UnityEvent StopShakeSwordEvent = new UnityEvent();
+
+    public static UnityEvent CheckBoundsEvent = new UnityEvent();
+
+    private bool _IRotateSwordOnZeroRunnig;
+    private bool _startShakeSwordRunnig;
+
     enum Side : byte
     {
-        Center,
         Left,
         Right
     }
 
     Side side;
 
-    [SerializeField] private float _speedRotate;
+    private bool _shakeNow;
+
+    [SerializeField] private float _speedResetRotate = 0.8f;
+
+    [SerializeField] private float _speedRotate = 10f;
     private uint _id;
     [SerializeField] private float _powerUp;
     [SerializeField] private float _powerDown;
 
-    [SerializeField] private Vector3 _startRotate;
-    [SerializeField] private Vector3 _targetRotate;
+    [SerializeField] private int _highScore;
 
-   [SerializeField] private int _highScore;
-
-    private bool _isLock;
+    [SerializeField]private bool _isLock;
 
     private void Start()
     {
-        _startRotate = transform.eulerAngles.normalized;
-        SetHighScoreEvent.AddListener(SetHighScore);
+        SetStandartParam();
     }
 
     private void Update()
     {
-        //ShakeSword();
+        
+        //Debug.Log("Center " + _colider.bounds.center);
+        //Debug.Log("Extents " + _colider.bounds.extents);
+        //Debug.Log("Size " + _colider.bounds.size);
+        //Debug.Log("Min " + _colider.bounds.min);
+        //Debug.Log("Max " + _colider.bounds.max);
+        ShakeSword();
+    }
 
+    private void SetStandartParam()
+    {
+        StartShakeSwordEvent.AddListener(StartShakeSword);
+        StopShakeSwordEvent.AddListener(StopShakeSword);
+        SetHighScoreEvent.AddListener(SetHighScore);
+        _colider = GetComponent<Collider>();
+        _startBoundsSword = _colider.bounds;
+        CheckBoundsEvent.AddListener(CheckBoundsSword);
     }
 
     public float GetPowerUp
@@ -54,15 +82,19 @@ public class Sword : MonoBehaviour
 
     private void ShakeSword()
     {
-        //if (side == Side.Left)
-        //{
-        if (transform.rotation.x > 150f && transform.rotation.x < 220f)
+        if (_shakeNow)
         {
+            switch (side)
+            {
+                case Side.Right:
+                    transform.Rotate(new Vector3(0, 0, _speedRotate * Time.deltaTime));
+                    break;
 
+                case Side.Left:
+                    transform.Rotate(new Vector3(0, 0, - _speedRotate * Time.deltaTime));
+                    break;
+            }
         }
-        transform.Rotate(Vector3.right * _speedRotate * Time.deltaTime);
-        //new Vector3(Mathf.Lerp(_startRotate, _startRotate + 30f, 1 * Time.deltaTime), 0, 0);
-        //}
 
     }
 
@@ -79,6 +111,74 @@ public class Sword : MonoBehaviour
         }
     }
 
+    IEnumerator ISwapSide()
+    {
+        while (true)
+        {
+            side = (side == Side.Left) ? (Side.Right) : (Side.Left);
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
 
+    IEnumerator IRotateSwordOnZero()
+    {
+        
+        while (true)
+        {
+            yield return new WaitForSeconds(0.25f);
+            if (transform.eulerAngles.z != 0.0f)
+            {
+               // transform.eulerAngles = new Vector3(0, 0, Mathf.Lerp(transform.eulerAngles.z, 0, _speedResetRotate));
+            }
+            else if (transform.eulerAngles.z == 0.0f)
+            {
+                StopIRotateSwordOnZero();
+            }
+
+        }
+    }
+    private void StopIRotateSwordOnZero()
+    {
+        _IRotateSwordOnZeroRunnig = false;
+        StopCoroutine("IRotateSwordOnZero");
+    }
+    private void CheckBoundsSword()
+    {
+        _targetBoundsYSword = (_startBoundsSword.center.y + _startBoundsSword.max.y) / 2;
+
+        if (_colider.bounds.center.y >= _targetBoundsYSword)
+        {
+            if (!_startShakeSwordRunnig)
+            {
+                _startShakeSwordRunnig = true;
+                StartShakeSword();
+            }
+            
+        }
+        else
+        {
+            if (!_IRotateSwordOnZeroRunnig)
+            {
+                StartCoroutine("IRotateSwordOnZero");
+                _IRotateSwordOnZeroRunnig = true;
+            }
+            StopShakeSword();
+            _startShakeSwordRunnig = false;
+        }
+
+    }
+
+    private void StartShakeSword()
+    {
+        _shakeNow = true;
+        StartCoroutine("ISwapSide");
+    }
+
+    private void StopShakeSword()
+    {
+        _shakeNow = false;
+        
+        StopCoroutine("ISwapSide");
+    }
 
 }

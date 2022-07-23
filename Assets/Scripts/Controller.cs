@@ -17,6 +17,8 @@ public class Controller : MonoBehaviour
     private bool _isSwiping;
     private bool _isMobile;
 
+    private int _counterForSwipe;
+
     private Sword sword;
 
     [SerializeField] private Score score;
@@ -40,7 +42,6 @@ public class Controller : MonoBehaviour
     {
         if (GameManager.gameMode == GameManager.GameMode.Game)
         {
-            ShakeSword();
             CheckIntervalBetweenTouches();
             GetTouchPosition();
         } 
@@ -57,6 +58,8 @@ public class Controller : MonoBehaviour
                 Score.AddScoreEvent.Invoke();
             }
             MoveUpSword();
+            AddCounterForSwipe();
+            Sword.CheckBoundsEvent.Invoke();
         }
     }
 
@@ -85,6 +88,7 @@ public class Controller : MonoBehaviour
             if (intervalTime.TotalMilliseconds > 1000f | intervalTime.TotalMilliseconds == 0f)
             {
                 MoveDownSword();
+                Sword.CheckBoundsEvent.Invoke();
             }
         }
     }
@@ -128,6 +132,7 @@ public class Controller : MonoBehaviour
         sword = GetComponent<Sword>();
         _startPos = transform.position;
         ResetPositionSwordEvent.AddListener(ResetPositionSword);
+        _counterForSwipe = 0;
     }
 
     private void MoveUpSword()
@@ -138,11 +143,6 @@ public class Controller : MonoBehaviour
     private void MoveDownSword()
     {
         transform.Translate(new Vector3(0f, -sword.GetPowerDown, 0f) * Time.deltaTime, Space.World);
-    }
-
-    private void ShakeSword()
-    {
-        // transform.rotation = (new Vector3(Mathf.Lerp(180, 90, 1), 0f, 0f),Quaternion.identity);
     }
 
     private void CheckSwipe()
@@ -157,6 +157,7 @@ public class Controller : MonoBehaviour
 
         if (_swipeDelta.magnitude > _deadZone)
         {
+            Debug.Log(" X: " +Mathf.Abs(_swipeDelta.x) + " Y: " + Mathf.Abs(_swipeDelta.y));
             if (Mathf.Abs(_swipeDelta.x) > Mathf.Abs(_swipeDelta.y))
             {
                 if (_swipeDelta.x > 0)
@@ -173,6 +174,12 @@ public class Controller : MonoBehaviour
             {
                 if (_swipeDelta.y > 0)
                 {
+                    if (CheckCounterForSwipe())
+                    {
+                        MoveUpSword();
+                        ResetCounterForSwipe();
+                    }
+                    
                     Debug.Log("Up");
                 }
                 else
@@ -204,5 +211,27 @@ public class Controller : MonoBehaviour
     {
         _isFirstClick = true;
         gameObject.transform.position = _startPos;
+    }
+
+    private void AddCounterForSwipe()
+    {
+        _counterForSwipe++;
+    }
+
+    private void ResetCounterForSwipe()
+    {
+        _counterForSwipe = 0;
+    }
+
+    private bool CheckCounterForSwipe()
+    {
+        if (_counterForSwipe >= 10)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

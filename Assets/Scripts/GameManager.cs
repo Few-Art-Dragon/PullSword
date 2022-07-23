@@ -24,10 +24,12 @@ public class GameManager : MonoBehaviour
     public static UnityEvent SetGameOverEvent = new UnityEvent();
     public static UnityEvent SetGameEvent = new UnityEvent();
     public static UnityEvent SetMainMenuEvent = new UnityEvent();
+    public static UnityEvent SetCollectionEvent = new UnityEvent();
 
     public enum GameMode:byte
     {
         MainMenu,
+        Collection,
         Game,
         GameOver
     }
@@ -51,6 +53,7 @@ public class GameManager : MonoBehaviour
         SetGameOverEvent.AddListener(SetModeGameOver);
         SetGameEvent.AddListener(SetModeGame);
         SetMainMenuEvent.AddListener(SetModeMainMenu);
+        SetCollectionEvent.AddListener(SetModeCollection);
         gameMode = GameMode.MainMenu;
 
     }
@@ -63,6 +66,15 @@ public class GameManager : MonoBehaviour
     private void SetModeGameOver()
     {
         gameMode = GameMode.GameOver;
+    }
+
+    private void SetModeCollection()
+    {
+        Score.FinishAddScoreEvent.Invoke(false);
+        Controller.ResetPositionSwordEvent.Invoke();
+        gameMode = GameMode.Collection;
+        SwordDateBase.PutSwordOnTribuneEvent.Invoke();
+
     }
 
     private void SetModeMainMenu()

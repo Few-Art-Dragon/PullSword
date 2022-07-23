@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 7bb22305b5984094e9e31809fc3e5b98, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98,11 +98,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7d89497aadd1f54da393973cecb8092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 30
-  minSpeed: 0
-  maxSpeed: 0
-  randomSpeed: 0
-  vMove: 0
+  _speed: 0
+  _minSpeed: 0
+  _maxSpeed: 0
+  _isRandomSpeed: 0
+  vectorMove: 0
 --- !u!65 &7000370577324032591
 BoxCollider:
   m_ObjectHideFlags: 0

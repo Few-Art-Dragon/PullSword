@@ -30,6 +30,10 @@ public class CameraTransitionManager : MonoBehaviour
         {
             GameManager.SetMainMenuEvent.Invoke();
         }
-        
+        else if (target.name == "CameraCollection")
+        {
+            GameManager.SetCollectionEvent.Invoke();
+        }
+
     }
 }
