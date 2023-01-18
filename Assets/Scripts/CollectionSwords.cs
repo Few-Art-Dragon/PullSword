@@ -11,19 +11,26 @@ public class CollectionSwords : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> _swords = new List<GameObject>();
-    private GameObject _currentActiveSword;
+    private GameObject _currentActiveSwordOnCollection;
+    private GameObject _currentActiveSwordOnStone;
     private int _indexSword;
 
+    private void OnEnable()
+    {
+        
+        GameManager.OnSetPlayStateEvent += GetRandomSwordForSpawnOnStone;
+    }
 
     private void Start()
     {
+        CheckSwordOnLock();
         _indexSword = 0;
-        OnSpawnSwordOnCollectionEvent?.Invoke(_swords[_indexSword]);
     }
 
-    private void SetActiveSword(bool state)
+    private void GetRandomSwordForSpawnOnStone()
     {
-        _currentActiveSword?.SetActive(state);
+        _currentActiveSwordOnStone = _swords[Random.Range(0, _swords.Count)];
+        OnSpawnSwordOnCollectionEvent?.Invoke(_currentActiveSwordOnStone);
     }
 
     private void CheckSwordOnLock()
@@ -32,10 +39,9 @@ public class CollectionSwords : MonoBehaviour
         {
             if (_swords[i].GetComponent<Sword>().isLockIt == false)
             {
-                _currentActiveSword = _swords[i];
-                //SetActiveSword(false);
-                //SetActiveSword(true);
-                OnSpawnSwordOnCollectionEvent?.Invoke(_swords[_indexSword]);
+                _currentActiveSwordOnCollection = _swords[i];
+                OnSpawnSwordOnCollectionEvent?.Invoke(_currentActiveSwordOnCollection);
+                break;
             }
         }
     }

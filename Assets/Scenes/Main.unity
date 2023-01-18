@@ -301,9 +301,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb3a402f3841f2640a4155a37d4ea49a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _offsetYPosition: 10
   _stonePosition: {fileID: 1467889342}
   _tribunePosition: {fileID: 288480021}
-  _offsetYPositionSword: 10
   _speedMoveDown: 0.54
 --- !u!4 &29665311
 Transform:
@@ -776,6 +776,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff667fe342bced747ad4d6ab4f11eb2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _swords:
+  - {fileID: 1127187959}
+  - {fileID: 344951951}
 --- !u!1 &249074828
 GameObject:
   m_ObjectHideFlags: 0
@@ -1050,18 +1053,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2850651648926371100, guid: 8c6cdfaa8d5190c4193e8ce4ced6b171, type: 3}
   m_PrefabInstance: {fileID: 3120683671437787546}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &344951952
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 344951951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a704698218907f24d8a1db6e1cf6129b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &377804341
 GameObject:
   m_ObjectHideFlags: 0
@@ -1351,6 +1342,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buttonIsActive: {fileID: 21300000, guid: 80a8b87aef6e0424d8721a33e0c3e8c6, type: 3}
   _buttonIsNotActive: {fileID: 21300000, guid: 89721106e1d110540a07a3df61343e1b, type: 3}
+  _gameState: 2
 --- !u!1 &399162583
 GameObject:
   m_ObjectHideFlags: 0
@@ -1524,6 +1516,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buttonIsActive: {fileID: 21300000, guid: e00cba1d6d8376145874e2d1cf4d011f, type: 3}
   _buttonIsNotActive: {fileID: 21300000, guid: 3105931b9b38b544c9fda6a34c657e34, type: 3}
+  _gameState: 0
 --- !u!1 &415008102
 GameObject:
   m_ObjectHideFlags: 0
@@ -1640,6 +1633,18 @@ MonoBehaviour:
       - m_Target: {fileID: 641585494}
         m_TargetAssemblyTypeName: CollectionSwords, Assembly-CSharp
         m_MethodName: SwitchBackSword
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1672823481}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: CheckGameState
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1934,6 +1939,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buttonIsActive: {fileID: 21300000, guid: 8b9633040c7d19a408b869f30bf75cb3, type: 3}
   _buttonIsNotActive: {fileID: 21300000, guid: abce5d26147aa244ebbb6da1b01c8d08, type: 3}
+  _gameState: 1
 --- !u!1 &569948437
 GameObject:
   m_ObjectHideFlags: 0
@@ -2141,8 +2147,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _swords:
-  - {fileID: 344951951}
   - {fileID: 1127187959}
+  - {fileID: 344951951}
 --- !u!4 &641585495
 Transform:
   m_ObjectHideFlags: 0
@@ -2800,7 +2806,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 956118323}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -3173,7 +3179,6 @@ GameObject:
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
-  - component: {fileID: 963194231}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3315,18 +3320,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!114 &963194231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06b54fe4803b5a94f86a61e3c376ffd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &996608082
 GameObject:
   m_ObjectHideFlags: 0
@@ -3620,18 +3613,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6578453972007785789, guid: 2f8df39da404a3d4298e29a05045ebb3, type: 3}
   m_PrefabInstance: {fileID: 9119937084419228057}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1127187960
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1127187959}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a704698218907f24d8a1db6e1cf6129b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1264738589
 GameObject:
   m_ObjectHideFlags: 0
@@ -3986,7 +3967,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1467889341}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6, y: -0.36, z: 1.25}
+  m_LocalPosition: {x: 0.6, y: -0.6, z: 1.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4159,6 +4140,18 @@ MonoBehaviour:
       - m_Target: {fileID: 641585494}
         m_TargetAssemblyTypeName: CollectionSwords, Assembly-CSharp
         m_MethodName: SwitchNextSword
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1672823481}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: CheckGameState
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4433,10 +4426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7755e9ed878d1254f97d6d53b02c27f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _saveManager: {fileID: 0}
-  _audioManager: {fileID: 0}
   _sun: {fileID: 705507994}
-  _scoreGameObject: {fileID: 956118323}
 --- !u!4 &1672823482
 Transform:
   m_ObjectHideFlags: 0
@@ -4778,6 +4768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buttonIsActive: {fileID: 21300000, guid: 239c74bc50984cd47a54f35e2e880dbf, type: 3}
   _buttonIsNotActive: {fileID: 21300000, guid: b61e50fcb52815140bfd8f5e9e362046, type: 3}
+  _gameState: 3
 --- !u!1 &1836993350
 GameObject:
   m_ObjectHideFlags: 0
@@ -6123,6 +6114,10 @@ PrefabInstance:
     - target: {fileID: 6578453972007785789, guid: 2f8df39da404a3d4298e29a05045ebb3, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7821218178565876397, guid: 2f8df39da404a3d4298e29a05045ebb3, type: 3}
+      propertyPath: _idSword
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f8df39da404a3d4298e29a05045ebb3, type: 3}

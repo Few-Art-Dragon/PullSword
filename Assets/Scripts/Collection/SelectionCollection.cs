@@ -18,8 +18,6 @@ public class SelectionCollection : ISelection
         if (Physics.Raycast(ray, out RaycastHit raycastHit) &&
             raycastHit.transform.TryGetComponent(out MenuSelectionTarget target))
         {
-
-            Debug.Log(target);
             target.Select();
         }
     }

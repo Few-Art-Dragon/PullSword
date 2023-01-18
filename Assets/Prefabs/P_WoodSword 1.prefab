@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 621166721740608793}
   - component: {fileID: 4458844787501612216}
   - component: {fileID: 1897227120314096045}
+  - component: {fileID: 3893635365258125144}
   m_Layer: 0
   m_Name: P_WoodSword 1
   m_TagString: Untagged
@@ -127,3 +128,16 @@ MonoBehaviour:
   _speedRotate: 10
   _powerUp: 0.05
   _powerDown: 0.5
+  _idSword: 0
+--- !u!114 &3893635365258125144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2850651648926371100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a704698218907f24d8a1db6e1cf6129b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

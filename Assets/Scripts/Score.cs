@@ -12,21 +12,15 @@ public class Score : MonoBehaviour
     private TMP_Text _textScore;
     private int _score = 0;
 
-    private void StartAddScore()
-    {
-        StartCoroutine("IAddScore");
-    }
-
-    private void StopAddScore()
-    {
-        StopCoroutine("IAddScore");
-        OnGetScoreEvent?.Invoke(_score);
-    }
-
     private void OnEnable()
     {
         SwordController.OnFirstClickEvent += StartAddScore;
         SwordController.OnLastClickEvent += StopAddScore;
+
+        GameManager.OnSetPlayStateEvent += EnableVisibleScoreText;
+        GameManager.OnSetMainMenuStateEvent += DisableVisibleScoreText;
+        GameManager.OnSetSettingsStateEvent += DisableVisibleScoreText;
+        GameManager.OnSetCollectionStateEvent += DisableVisibleScoreText;
     }
 
     private void Start()
@@ -38,6 +32,32 @@ public class Score : MonoBehaviour
     {
         SwordController.OnFirstClickEvent -= StartAddScore;
         SwordController.OnLastClickEvent -= StopAddScore;
+
+        GameManager.OnSetPlayStateEvent -= EnableVisibleScoreText;
+        GameManager.OnSetMainMenuStateEvent -= DisableVisibleScoreText;
+        GameManager.OnSetSettingsStateEvent -= DisableVisibleScoreText;
+        GameManager.OnSetCollectionStateEvent -= DisableVisibleScoreText;
+    }
+
+    private void EnableVisibleScoreText()
+    {
+        _textScore.enabled = true;
+    }
+
+    private void DisableVisibleScoreText()
+    {
+        _textScore.enabled = false;
+    }
+
+    private void StartAddScore()
+    {
+        StartCoroutine("IAddScore");
+    }
+
+    private void StopAddScore()
+    {
+        StopCoroutine("IAddScore");
+        OnGetScoreEvent?.Invoke(_score);
     }
 
     private void UpdateScoreText()

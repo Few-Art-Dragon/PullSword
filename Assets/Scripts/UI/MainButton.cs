@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static GameManager;
 
 public class MainButton : MonoBehaviour, IButton
 {
@@ -10,8 +11,17 @@ public class MainButton : MonoBehaviour, IButton
     private Sprite _buttonIsActive;
     [SerializeField]
     private Sprite _buttonIsNotActive;
+    [SerializeField]
+    private GameState _gameState;
 
     public event IButton.ClickHandler OnClickEvent;
+
+    private void Start()
+    {
+        _imageButton = GetComponent<Image>();
+    }
+
+    
 
     public void OnClick()
     {
@@ -28,8 +38,8 @@ public class MainButton : MonoBehaviour, IButton
         _imageButton.sprite = _buttonIsNotActive;
     }
 
-    private void Start()
+    public GameState GetGameState()
     {
-        _imageButton = GetComponent<Image>();
+        return _gameState;
     }
 }

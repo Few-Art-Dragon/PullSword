@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 7526773722351742476}
   - component: {fileID: 2546112233565573818}
   - component: {fileID: 7821218178565876397}
+  - component: {fileID: 592531243549258333}
   m_Layer: 0
   m_Name: P_Sword1
   m_TagString: Untagged
@@ -163,3 +164,16 @@ MonoBehaviour:
   _speedRotate: 10
   _powerUp: 0.045
   _powerDown: 0.5
+  _idSword: 0
+--- !u!114 &592531243549258333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6578453972007785789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a704698218907f24d8a1db6e1cf6129b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

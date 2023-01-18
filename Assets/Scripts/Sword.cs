@@ -27,6 +27,34 @@ public class Sword : MonoBehaviour, IControllable
     private bool _shakeNow;
     Side side;
 
+    private void OnEnable()
+    {
+        SwordController.OnLastClickEvent += StopShakeSword;
+    }
+
+    private void Start()
+    {
+        _colider = GetComponent<Collider>();
+        _startBoundsSword = _colider.bounds;
+        _startSwordPosition = transform.position;
+        ResetPositionSword();
+    }
+
+    private void Update()
+    {
+        ShakeSword();
+    }
+
+    private void OnDisable()
+    {
+        SwordController.OnLastClickEvent -= StopShakeSword;
+    }
+
+    public int GetIdSword()
+    {
+        return _idSword;
+    }
+
     public void MoveUpSword(float powerUp)
     {
         transform.Translate(new Vector3(0f, powerUp, 0f), Space.World);
@@ -105,30 +133,6 @@ public class Sword : MonoBehaviour, IControllable
     {
         _shakeNow = false;
         StopCoroutine("ISwapSide");
-    }
-
-    private void OnEnable()
-    {
-        SwordController.OnLastClickEvent += StopShakeSword;
-        isLockIt = true;
-    }
-
-    private void Start()
-    {
-        _colider = GetComponent<Collider>();
-        _startBoundsSword = _colider.bounds;
-        _startSwordPosition = transform.position;
-        ResetPositionSword();
-    }
-
-    private void Update()
-    {
-        ShakeSword();
-    }
-
-    private void OnDisable()
-    {
-        SwordController.OnLastClickEvent -= StopShakeSword;
     }
 
     IEnumerator ISwapSide()
